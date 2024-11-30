@@ -35,7 +35,18 @@ def test_add_new_user(setup_database, connection):
     cursor.execute("SELECT * FROM users WHERE username='testuser';")
     user = cursor.fetchone()
     assert user, "Пользователь должен быть добавлен в базу данных."
-
+def test_sucsesful_auth():
+    authenticate_user("testuser", "password123")
+    assert "Авторизация успешна."
+def test_auth_no_exicted_user(setup_database, connection):
+    flag = authenticate_user("tes", "password1234") 
+    assert flag == False, "Ошибка аутентификации"
+def test_false_password():
+    authenticate_user("testuser", "password1234")
+    assert "Неверный логин или пароль."
+def test_list():
+    display_users()
+    assert "Логин: testuser, Электронная почта: testuser@example.com"
 # Возможные варианты тестов:
 """
 Тест добавления пользователя с существующим логином.
